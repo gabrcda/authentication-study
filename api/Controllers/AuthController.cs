@@ -20,7 +20,7 @@ namespace api.Controllers
             _authService = authService;
         }
 
-        [HttpPost]
+        [HttpPost("api/Register")]
         public async Task<ActionResult<ServiceResponse<AddedUserDto>>> Register(RegisterUserDto newUser)
         {
             var response = await _authService.Register(newUser);
