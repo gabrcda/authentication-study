@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.User;
 using api.Models;
+using api.Services.Password;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Services.Auth
 {
@@ -14,10 +15,12 @@ namespace api.Services.Auth
     {
         private readonly DataContext _dbContext;
         private readonly IMapper _mapping;
-        public AuthService(DataContext dbContext, IMapper mapping)
+        private readonly IPasswordService _passwordService;
+        public AuthService(DataContext dbContext, IMapper mapping, IPasswordService passwordService)
         {
             _dbContext = dbContext;
             _mapping = mapping;
+            _passwordService = passwordService;
         }
 
         public async Task<ServiceResponse<AddedUserDto>> Register(RegisterUserDto newUser)
@@ -30,7 +33,7 @@ namespace api.Services.Auth
                     throw new Exception("user already exist");
                 }
                 var newUserModel = _mapping.Map<User>(newUser);
-                newUserModel.HashPassword = MakeProtectedPassword(newUser.Password);
+                newUserModel.HashPassword = _passwordService.MakeProtectedPassword(newUser.Password);
                 await _dbContext.Users.AddAsync(newUserModel);
                 await _dbContext.SaveChangesAsync();
                 response.Data = _mapping.Map<AddedUserDto>(newUserModel);
@@ -45,9 +48,31 @@ namespace api.Services.Auth
             return response;
         }
 
-        private string MakeProtectedPassword(string newUserPassword)
+        public async Task<ServiceResponse<LoginUserDto>> Login(LoginUserDto loginUser)
         {
-            return BCrypt.Net.BCrypt.HashPassword(newUserPassword);
+            var response = new ServiceResponse<LoginUserDto>();
+            try
+            {
+                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(c => c.Username == loginUser.Username);
+                if(dbUser is null)
+                {
+                    throw new Exception("user not found!");
+                }
+
+                if(!_passwordService.VerifyPasswordMatch(loginUser.Password, dbUser.HashPassword))
+                {
+                    throw new Exception("invalid credentials!");
+                }
+
+                //Implement JWT tokenization...
+
+            }catch (Exception ex)
+            {
+                response.Data = null;
+                response.Message = ex.Message;
+                response.Status = false;   
+            }
+            return response;
         }
     }
 }

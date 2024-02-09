@@ -27,5 +27,13 @@ namespace api.Controllers
             if(!response.Status) { return BadRequest(response);}
             return Ok(response);
         }
+
+        [HttpPost("api/Login")]
+        public async Task<ActionResult<ServiceResponse<LoginUserDto>>> Login(LoginUserDto loginUser)
+        {
+            var response = await _authService.Login(loginUser);
+            if(!response.Status) { return BadRequest(response);}
+            return Ok(response);
+        }
     }
 }
