@@ -140,3 +140,8 @@ C:\Users\Gabriel\Pictures\authentication-api\api\obj\Debug\net7.0\refint\api.dll
 C:\Users\Gabriel\Pictures\authentication-api\api\obj\Debug\net7.0\api.pdb
 C:\Users\Gabriel\Pictures\authentication-api\api\obj\Debug\net7.0\api.genruntimeconfig.cache
 C:\Users\Gabriel\Pictures\authentication-api\api\obj\Debug\net7.0\ref\api.dll
+C:\Users\Gabriel\Pictures\authentication-api\api\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Gabriel\Pictures\authentication-api\api\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Gabriel\Pictures\authentication-api\api\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Gabriel\Pictures\authentication-api\api\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Gabriel\Pictures\authentication-api\api\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

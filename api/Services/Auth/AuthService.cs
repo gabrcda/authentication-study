@@ -48,9 +48,9 @@ namespace api.Services.Auth
             return response;
         }
 
-        public async Task<ServiceResponse<LoginUserDto>> Login(LoginUserDto loginUser)
+        public async Task<ServiceResponse<string>> Login(LoginUserDto loginUser)
         {
-            var response = new ServiceResponse<LoginUserDto>();
+            var response = new ServiceResponse<string>();
             try
             {
                 var dbUser = await _dbContext.Users.FirstOrDefaultAsync(c => c.Username == loginUser.Username);
@@ -64,7 +64,9 @@ namespace api.Services.Auth
                     throw new Exception("invalid credentials!");
                 }
 
-                //Implement JWT tokenization...
+                var loginToken = _passwordService.TokenCreation(dbUser);
+                response.Message = "user logged in successfully";
+                response.Data = loginToken;
 
             }catch (Exception ex)
             {

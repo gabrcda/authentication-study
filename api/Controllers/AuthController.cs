@@ -20,7 +20,7 @@ namespace api.Controllers
             _authService = authService;
         }
 
-        [HttpPost("api/Register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<AddedUserDto>>> Register(RegisterUserDto newUser)
         {
             var response = await _authService.Register(newUser);
@@ -28,8 +28,8 @@ namespace api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("api/Login")]
-        public async Task<ActionResult<ServiceResponse<LoginUserDto>>> Login(LoginUserDto loginUser)
+        [HttpPost("Login")]
+        public async Task<ActionResult<ServiceResponse<string>>> Login(LoginUserDto loginUser)
         {
             var response = await _authService.Login(loginUser);
             if(!response.Status) { return BadRequest(response);}
